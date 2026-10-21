@@ -2,7 +2,7 @@ CONTRACTS_DIR := dabdub_contracts
 WASM_DIR      := $(CONTRACTS_DIR)/target/wasm32v1-none/release
 WASM_SIZE_LIMIT := 65536  # 64 KB
 
-.PHONY: build build-optimised check-wasm-size test
+.PHONY: build build-optimised check-wasm-size test integration-test
 
 build:
 	cd $(CONTRACTS_DIR) && cargo build --target wasm32v1-none --release
@@ -34,3 +34,7 @@ check-wasm-size: build-optimised
 
 test:
 	cd $(CONTRACTS_DIR) && cargo test
+
+integration-test: build
+	@echo "Running full payment lifecycle integration test against local testnet..."
+	./scripts/integration-test.sh
